@@ -60,6 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'eda_windspeed';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="EDA Fraud" href="fraudecredit.html" />
     <link rel="prev" title="Boston Housing Model" href="boston_housing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -179,6 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Breast_cancer.html">Breast Cancer Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="boston_housing.html">Boston Housing Model</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Análisis Exploratorio de Datos Wind Speed.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fraudecredit.html">EDA Fraud</a></li>
 </ul>
 
     </div>
@@ -611,10 +613,9 @@ PRESSï¿½O ATMOSFERICA MIN. NA HORA ANT. (AUT) (mB)                   0.0
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;DIR_VIENTO&#39;, &#39;VEL_VIENTO&#39;, &#39;UMID_REL_MAX&#39;, &#39;UMID_REL_MIN&#39;,
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;HORA&#39;, &#39;DIR_VIENTO&#39;, &#39;VEL_VIENTO&#39;, &#39;UMID_REL_MAX&#39;, &#39;UMID_REL_MIN&#39;,
        &#39;TEMP_MAX_ANT&#39;, &#39;TEMP_MIN_ANT&#39;, &#39;UMID_REL_AR&#39;, &#39;PRES_ATM&#39;,
-       &#39;PRECIP_TOTAL&#39;, &#39;RAJADA_MAX&#39;, &#39;PRES_ATM_MAX_ANT&#39;, &#39;PRES_ATM_MIN_ANT&#39;,
-       &#39;HORA_del_dia&#39;],
+       &#39;PRECIP_TOTAL&#39;, &#39;RAJADA_MAX&#39;, &#39;PRES_ATM_MAX_ANT&#39;, &#39;PRES_ATM_MIN_ANT&#39;],
       dtype=&#39;object&#39;)
 </pre></div>
 </div>
@@ -1344,76 +1345,155 @@ HORA_del_dia                                   -0.030738      1.000000
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="nn">File c:\Users\pc\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\indexes\base.py:3790,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3789</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">3790</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3791</span> <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-
-<span class="nn">File index.pyx:152,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
-
-<span class="nn">File index.pyx:181,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
-
-<span class="nn">File pandas\_libs\hashtable_class_helper.pxi:7080,</span> in <span class="ni">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="nt">()</span>
-
-<span class="nn">File pandas\_libs\hashtable_class_helper.pxi:7088,</span> in <span class="ni">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="nt">()</span>
-
-<span class="ne">KeyError</span>: &#39;HORA&#39;
-
-<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
-
-<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;HORA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;HORA&#39;</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Establecer la columna HORA como el índice del DataFrame</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;HORA&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="nn">File c:\Users\pc\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\frame.py:3893,</span> in <span class="ni">DataFrame.__getitem__</span><span class="nt">(self, key)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3891</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">nlevels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3892</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_multilevel</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3893</span> <span class="n">indexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3894</span> <span class="k">if</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">indexer</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">3895</span>     <span class="n">indexer</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexer</span><span class="p">]</span>
-
-<span class="nn">File c:\Users\pc\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\indexes\base.py:3797,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3792</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">casted_key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">3793</span>         <span class="nb">isinstance</span><span class="p">(</span><span class="n">casted_key</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3794</span>         <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">casted_key</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3795</span>     <span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">3796</span>         <span class="k">raise</span> <span class="n">InvalidIndexError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3797</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
-<span class="g g-Whitespace">   </span><span class="mi">3798</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3799</span>     <span class="c1"># If we have a listlike key, _check_indexing_error will raise</span>
-<span class="g g-Whitespace">   </span><span class="mi">3800</span>     <span class="c1">#  InvalidIndexError. Otherwise we fall through and re-raise</span>
-<span class="g g-Whitespace">   </span><span class="mi">3801</span>     <span class="c1">#  the TypeError.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3802</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_indexing_error</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-<span class="ne">KeyError</span>: &#39;HORA&#39;
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>HORA</th>
+      <th>DIR_VIENTO</th>
+      <th>VEL_VIENTO</th>
+      <th>UMID_REL_MAX</th>
+      <th>UMID_REL_MIN</th>
+      <th>TEMP_MAX_ANT</th>
+      <th>TEMP_MIN_ANT</th>
+      <th>UMID_REL_AR</th>
+      <th>PRES_ATM</th>
+      <th>PRECIP_TOTAL</th>
+      <th>RAJADA_MAX</th>
+      <th>PRES_ATM_MAX_ANT</th>
+      <th>PRES_ATM_MIN_ANT</th>
+      <th>HORA_del_dia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2024-05-12 12:00:00</td>
+      <td>0.809017</td>
+      <td>1.8</td>
+      <td>69.0</td>
+      <td>60.0</td>
+      <td>22.6</td>
+      <td>20.7</td>
+      <td>61.0</td>
+      <td>888.2</td>
+      <td>0.0</td>
+      <td>3.8</td>
+      <td>888.2</td>
+      <td>887.7</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2024-05-12 13:00:00</td>
+      <td>0.965926</td>
+      <td>2.7</td>
+      <td>62.0</td>
+      <td>55.0</td>
+      <td>24.2</td>
+      <td>22.5</td>
+      <td>55.0</td>
+      <td>888.4</td>
+      <td>0.0</td>
+      <td>4.7</td>
+      <td>888.4</td>
+      <td>888.2</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2024-05-12 14:00:00</td>
+      <td>0.891007</td>
+      <td>2.0</td>
+      <td>56.0</td>
+      <td>50.0</td>
+      <td>25.5</td>
+      <td>24.3</td>
+      <td>51.0</td>
+      <td>888.1</td>
+      <td>0.0</td>
+      <td>4.9</td>
+      <td>888.4</td>
+      <td>888.1</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024-05-12 15:00:00</td>
+      <td>0.848048</td>
+      <td>2.5</td>
+      <td>52.0</td>
+      <td>44.0</td>
+      <td>27.4</td>
+      <td>25.0</td>
+      <td>44.0</td>
+      <td>887.4</td>
+      <td>0.0</td>
+      <td>5.8</td>
+      <td>888.1</td>
+      <td>887.4</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2024-05-12 16:00:00</td>
+      <td>0.224951</td>
+      <td>2.4</td>
+      <td>50.0</td>
+      <td>43.0</td>
+      <td>27.1</td>
+      <td>25.5</td>
+      <td>46.0</td>
+      <td>886.5</td>
+      <td>0.0</td>
+      <td>5.8</td>
+      <td>887.4</td>
+      <td>886.5</td>
+      <td>16</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="c1"># plt.figure(figsize=(12, 6))</span>
-<span class="c1"># plt.plot(df.index, df[&#39;VEL_VIENTO&#39;], label=&#39;Velocidad del Viento&#39;)</span>
-<span class="c1"># plt.title(&#39;Serie Temporal de Velocidad del Viento&#39;)</span>
-<span class="c1"># plt.xlabel(&#39;Fecha y Hora&#39;)</span>
-<span class="c1"># plt.ylabel(&#39;Velocidad del Viento (m/s)&#39;)</span>
-<span class="c1"># plt.legend()</span>
-<span class="c1"># plt.grid(True)</span>
-<span class="c1"># plt.show()</span>
+<span class="n">promedio_por_hora</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;HORA_del_dia&#39;</span><span class="p">])[</span><span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
-<span class="c1"># Descomposición de la serie temporal</span>
-<span class="n">decomposition</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">seasonal_decompose</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;additive&#39;</span><span class="p">,</span> <span class="n">period</span> <span class="o">=</span> <span class="mi">24</span><span class="p">)</span>
-<span class="n">decomposition</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="c1"># Trazar el promedio de la velocidad del viento por hora del día</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">promedio_por_hora</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Promedio de Velocidad del Viento por Hora del Día&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hora del Día&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Promedio de Velocidad del Viento (m/s)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="c1"># Análisis de autocorrelación</span>
-<span class="n">sm</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">plot_acf</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">],</span> <span class="n">lags</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">plot_acf</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">],</span> <span class="n">lags</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Función de Autocorrelación (ACF)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lags&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Autocorrelación&#39;</span><span class="p">)</span>
@@ -1422,10 +1502,14 @@ HORA_del_dia                                   -0.030738      1.000000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/07b6e2ec16177e8f7db918aea90df7513faad097a597e575fed720df2f05a590.png" src="_images/07b6e2ec16177e8f7db918aea90df7513faad097a597e575fed720df2f05a590.png" />
-<img alt="_images/8964fe5d5db0a1a3e39456277fc7709d3bf02a78a3853dc896fc322e372f06c4.png" src="_images/8964fe5d5db0a1a3e39456277fc7709d3bf02a78a3853dc896fc322e372f06c4.png" />
+<img alt="_images/64ab3604736894ba180d746a7f28664128b529ffa1a489b7559163003b4b8af0.png" src="_images/64ab3604736894ba180d746a7f28664128b529ffa1a489b7559163003b4b8af0.png" />
+<img alt="_images/444615c08cc7a2e658863e8cf2028dea465491a8c1047116be3b6df5c4488dd5.png" src="_images/444615c08cc7a2e658863e8cf2028dea465491a8c1047116be3b6df5c4488dd5.png" />
 </div>
 </div>
+<ul class="simple">
+<li><p><strong>Promedio velocidad por hora del día:</strong> Este gráfico representa la velocidad promedio del viento en función de la hora del día. Muestra un patrón típico con velocidades del viento bajas durante la noche y primeras horas de la mañana, aumentando gradualmente hasta alcanzar un máximo alrededor del mediodía y luego disminuyendo nuevamente por la tarde y noche. Este comportamiento es común debido a los efectos del calentamiento diurno de la superficie terrestre por el sol.</p></li>
+<li><p><strong>Autocorrelación</strong>: Este gráfico muestra la función de autocorrelación (ACF) de una serie de tiempo. La ACF mide la correlación entre los valores de una serie y sus valores rezagados. Los altos valores iniciales de la ACF indican una fuerte correlación entre observaciones cercanas en el tiempo, lo que sugiere la presencia de persistencia o inercia en los datos. La forma ondulante decreciente es característica de series de tiempo estacionarias. Este tipo de gráfico se usa comúnmente para identificar patrones y determinar el orden del modelo ARIMA apropiado para predecir valores futuros de la serie.</p></li>
+</ul>
 </section>
 </section>
 </section>
@@ -1468,6 +1552,15 @@ HORA_del_dia                                   -0.030738      1.000000
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Boston Housing Model</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="fraudecredit.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">EDA Fraud</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
