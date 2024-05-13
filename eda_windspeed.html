@@ -1,0 +1,1565 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Análisis Exploratorio de Datos Wind Speed. &#8212; Machine Learning Parcial 3</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'eda_windspeed';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Boston Housing Model" href="boston_housing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Machine Learning Parcial 3 - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Machine Learning Parcial 3 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Machine Learning Exam
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Breast_cancer.html">Breast Cancer Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boston_housing.html">Boston Housing Model</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Análisis Exploratorio de Datos Wind Speed.</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Feda_windspeed.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/eda_windspeed.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Análisis Exploratorio de Datos Wind Speed.</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windspeed"><strong>WindSpeed:</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#liberias"><strong>Liberias:</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importacion-de-datos"><strong>Importacion de datos:</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio"><strong>Analisis Exploratorio:</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estrutura-de-los-datos"><strong>Estrutura de los datos:</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tamano"><strong>Tamaño:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#conteo-de-nulos"><strong>Conteo de nulos:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variables"><strong>Variables:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#renombre-de-las-columndas-del-dataframe"><strong>Renombre de las Columndas del Dataframe:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-en-el-formato"><strong>Cambio en el formato:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summary"><strong>Summary:</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion"><strong>Visualizacion:</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#histograma"><strong>Histograma:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot"><strong>Boxplot:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot"><strong>ScatterPlot:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regplot"><strong>RegPlot:</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-variables"><strong>Correlacion entre variables:</strong></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-exploratorio-de-datos-wind-speed">
+<h1>Análisis Exploratorio de Datos Wind Speed.<a class="headerlink" href="#analisis-exploratorio-de-datos-wind-speed" title="Link to this heading">#</a></h1>
+<section id="windspeed">
+<h2><strong>WindSpeed:</strong><a class="headerlink" href="#windspeed" title="Link to this heading">#</a></h2>
+<section id="liberias">
+<h3><strong>Liberias:</strong><a class="headerlink" href="#liberias" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">statsmodels.stats.outliers_influence</span> <span class="kn">import</span> <span class="n">variance_inflation_factor</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">r2_score</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">--------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">statsmodels.stats.outliers_influence</span> <span class="kn">import</span> <span class="n">variance_inflation_factor</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;matplotlib&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="importacion-de-datos">
+<h3><strong>Importacion de datos:</strong><a class="headerlink" href="#importacion-de-datos" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/lihkir/Data/raw/main/wind_speed/data_treino_dv_df_2000_2010.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="analisis-exploratorio">
+<h3><strong>Analisis Exploratorio:</strong><a class="headerlink" href="#analisis-exploratorio" title="Link to this heading">#</a></h3>
+</section>
+<section id="estrutura-de-los-datos">
+<h3><strong>Estrutura de los datos:</strong><a class="headerlink" href="#estrutura-de-los-datos" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 87693 entries, 0 to 87692
+Data columns (total 13 columns):
+ #   Column                                                 Non-Null Count  Dtype  
+---  ------                                                 --------------  -----  
+ 0   HORA (UTC)                                             87693 non-null  object 
+ 1   VENTO, DIREï¿½ï¿½O HORARIA (gr) (ï¿½ (gr))             87693 non-null  float64
+ 2   VENTO, VELOCIDADE HORARIA (m/s)                        87693 non-null  float64
+ 3   UMIDADE REL. MAX. NA HORA ANT. (AUT) (%)               87693 non-null  float64
+ 4   UMIDADE REL. MIN. NA HORA ANT. (AUT) (%)               87693 non-null  float64
+ 5   TEMPERATURA Mï¿½XIMA NA HORA ANT. (AUT) (ï¿½C)         87693 non-null  float64
+ 6   TEMPERATURA Mï¿½NIMA NA HORA ANT. (AUT) (ï¿½C)         87693 non-null  float64
+ 7   UMIDADE RELATIVA DO AR, HORARIA (%)                    87693 non-null  float64
+ 8   PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARIA (mB)  87693 non-null  float64
+ 9   PRECIPITAï¿½ï¿½O TOTAL, HORï¿½RIO (mm)                 87693 non-null  float64
+ 10  VENTO, RAJADA MAXIMA (m/s)                             87693 non-null  float64
+ 11  PRESSï¿½O ATMOSFERICA MAX.NA HORA ANT. (AUT) (mB)      87693 non-null  float64
+ 12  PRESSï¿½O ATMOSFERICA MIN. NA HORA ANT. (AUT) (mB)     87693 non-null  float64
+dtypes: float64(12), object(1)
+memory usage: 8.7+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<section id="tamano">
+<h4><strong>Tamaño:</strong><a class="headerlink" href="#tamano" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(87693, 13)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="conteo-de-nulos">
+<h4><strong>Conteo de nulos:</strong><a class="headerlink" href="#conteo-de-nulos" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">datos_faltantes</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">porcentaje_faltantes</span> <span class="o">=</span> <span class="p">(</span><span class="n">datos_faltantes</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">df_faltantes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;Datos faltantes&quot;</span><span class="p">:</span> <span class="n">datos_faltantes</span><span class="p">,</span> <span class="s2">&quot;Porcentaje faltantes&quot;</span><span class="p">:</span> <span class="n">porcentaje_faltantes</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_faltantes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                    Datos faltantes  \
+HORA (UTC)                                                        0   
+VENTO, DIREï¿½ï¿½O HORARIA (gr) (ï¿½ (gr))                        0   
+VENTO, VELOCIDADE HORARIA (m/s)                                   0   
+UMIDADE REL. MAX. NA HORA ANT. (AUT) (%)                          0   
+UMIDADE REL. MIN. NA HORA ANT. (AUT) (%)                          0   
+TEMPERATURA Mï¿½XIMA NA HORA ANT. (AUT) (ï¿½C)                    0   
+TEMPERATURA Mï¿½NIMA NA HORA ANT. (AUT) (ï¿½C)                    0   
+UMIDADE RELATIVA DO AR, HORARIA (%)                               0   
+PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARI...                0   
+PRECIPITAï¿½ï¿½O TOTAL, HORï¿½RIO (mm)                            0   
+VENTO, RAJADA MAXIMA (m/s)                                        0   
+PRESSï¿½O ATMOSFERICA MAX.NA HORA ANT. (AUT) (mB)                 0   
+PRESSï¿½O ATMOSFERICA MIN. NA HORA ANT. (AUT) (mB)                0   
+
+                                                    Porcentaje faltantes  
+HORA (UTC)                                                           0.0  
+VENTO, DIREï¿½ï¿½O HORARIA (gr) (ï¿½ (gr))                           0.0  
+VENTO, VELOCIDADE HORARIA (m/s)                                      0.0  
+UMIDADE REL. MAX. NA HORA ANT. (AUT) (%)                             0.0  
+UMIDADE REL. MIN. NA HORA ANT. (AUT) (%)                             0.0  
+TEMPERATURA Mï¿½XIMA NA HORA ANT. (AUT) (ï¿½C)                       0.0  
+TEMPERATURA Mï¿½NIMA NA HORA ANT. (AUT) (ï¿½C)                       0.0  
+UMIDADE RELATIVA DO AR, HORARIA (%)                                  0.0  
+PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARI...                   0.0  
+PRECIPITAï¿½ï¿½O TOTAL, HORï¿½RIO (mm)                               0.0  
+VENTO, RAJADA MAXIMA (m/s)                                           0.0  
+PRESSï¿½O ATMOSFERICA MAX.NA HORA ANT. (AUT) (mB)                    0.0  
+PRESSï¿½O ATMOSFERICA MIN. NA HORA ANT. (AUT) (mB)                   0.0  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="variables">
+<h4><strong>Variables:</strong><a class="headerlink" href="#variables" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coln</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">coln</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;HORA (UTC)&#39;, &#39;VENTO, DIREï¿½ï¿½O HORARIA (gr) (ï¿½ (gr))&#39;,
+       &#39;VENTO, VELOCIDADE HORARIA (m/s)&#39;,
+       &#39;UMIDADE REL. MAX. NA HORA ANT. (AUT) (%)&#39;,
+       &#39;UMIDADE REL. MIN. NA HORA ANT. (AUT) (%)&#39;,
+       &#39;TEMPERATURA Mï¿½XIMA NA HORA ANT. (AUT) (ï¿½C)&#39;,
+       &#39;TEMPERATURA Mï¿½NIMA NA HORA ANT. (AUT) (ï¿½C)&#39;,
+       &#39;UMIDADE RELATIVA DO AR, HORARIA (%)&#39;,
+       &#39;PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARIA (mB)&#39;,
+       &#39;PRECIPITAï¿½ï¿½O TOTAL, HORï¿½RIO (mm)&#39;, &#39;VENTO, RAJADA MAXIMA (m/s)&#39;,
+       &#39;PRESSï¿½O ATMOSFERICA MAX.NA HORA ANT. (AUT) (mB)&#39;,
+       &#39;PRESSï¿½O ATMOSFERICA MIN. NA HORA ANT. (AUT) (mB)&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="renombre-de-las-columndas-del-dataframe">
+<h4><strong>Renombre de las Columndas del Dataframe:</strong><a class="headerlink" href="#renombre-de-las-columndas-del-dataframe" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;HORA (UTC)&quot;</span><span class="p">:</span> <span class="s2">&quot;HORA&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;VENTO, DIREï¿½ï¿½O HORARIA (gr) (ï¿½ (gr))&quot;</span><span class="p">:</span> <span class="s2">&quot;DIR_VIENTO&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;VENTO, VELOCIDADE HORARIA (m/s)&quot;</span><span class="p">:</span> <span class="s2">&quot;VEL_VIENTO&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;UMIDADE REL. MAX. NA HORA ANT. (AUT) (%)&quot;</span><span class="p">:</span> <span class="s2">&quot;UMID_REL_MAX&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;UMIDADE REL. MIN. NA HORA ANT. (AUT) (%)&quot;</span><span class="p">:</span> <span class="s2">&quot;UMID_REL_MIN&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TEMPERATURA Mï¿½XIMA NA HORA ANT. (AUT) (ï¿½C)&quot;</span><span class="p">:</span> <span class="s2">&quot;TEMP_MAX_ANT&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TEMPERATURA Mï¿½NIMA NA HORA ANT. (AUT) (ï¿½C)&quot;</span><span class="p">:</span> <span class="s2">&quot;TEMP_MIN_ANT&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;UMIDADE RELATIVA DO AR, HORARIA (%)&quot;</span><span class="p">:</span> <span class="s2">&quot;UMID_REL_AR&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARIA (mB)&quot;</span><span class="p">:</span> <span class="s2">&quot;PRES_ATM&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;PRECIPITAï¿½ï¿½O TOTAL, HORï¿½RIO (mm)&quot;</span><span class="p">:</span> <span class="s2">&quot;PRECIP_TOTAL&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;VENTO, RAJADA MAXIMA (m/s)&quot;</span><span class="p">:</span> <span class="s2">&quot;RAJADA_MAX&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;PRESSï¿½O ATMOSFERICA MAX.NA HORA ANT. (AUT) (mB)&quot;</span><span class="p">:</span> <span class="s2">&quot;PRES_ATM_MAX_ANT&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;PRESSï¿½O ATMOSFERICA MIN. NA HORA ANT. (AUT) (mB)&quot;</span><span class="p">:</span> <span class="s2">&quot;PRES_ATM_MIN_ANT&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;DIR_VIENTO&#39;, &#39;VEL_VIENTO&#39;, &#39;UMID_REL_MAX&#39;, &#39;UMID_REL_MIN&#39;,
+       &#39;TEMP_MAX_ANT&#39;, &#39;TEMP_MIN_ANT&#39;, &#39;UMID_REL_AR&#39;, &#39;PRES_ATM&#39;,
+       &#39;PRECIP_TOTAL&#39;, &#39;RAJADA_MAX&#39;, &#39;PRES_ATM_MAX_ANT&#39;, &#39;PRES_ATM_MIN_ANT&#39;,
+       &#39;HORA_del_dia&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 87693 entries, 0 to 87692
+Data columns (total 14 columns):
+ #   Column            Non-Null Count  Dtype         
+---  ------            --------------  -----         
+ 0   HORA              87693 non-null  datetime64[ns]
+ 1   DIR_VIENTO        87693 non-null  float64       
+ 2   VEL_VIENTO        87693 non-null  float64       
+ 3   UMID_REL_MAX      87693 non-null  float64       
+ 4   UMID_REL_MIN      87693 non-null  float64       
+ 5   TEMP_MAX_ANT      87693 non-null  float64       
+ 6   TEMP_MIN_ANT      87693 non-null  float64       
+ 7   UMID_REL_AR       87693 non-null  float64       
+ 8   PRES_ATM          87693 non-null  float64       
+ 9   PRECIP_TOTAL      87693 non-null  float64       
+ 10  RAJADA_MAX        87693 non-null  float64       
+ 11  PRES_ATM_MAX_ANT  87693 non-null  float64       
+ 12  PRES_ATM_MIN_ANT  87693 non-null  float64       
+ 13  HORA_del_dia      87693 non-null  int32         
+dtypes: datetime64[ns](1), float64(12), int32(1)
+memory usage: 9.0 MB
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cambio-en-el-formato">
+<h4><strong>Cambio en el formato:</strong><a class="headerlink" href="#cambio-en-el-formato" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;HORA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;HORA&quot;</span><span class="p">])</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;HORA_del_dia&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;HORA&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Normalización de Nombres de Columnas:</strong>
+Se clarificaron y simplificaron los nombres de las columnas para facilitar su manejo y referencia en análisis subsiguientes. Esto es esencial para evitar errores y confusiones en etapas posteriores de modelado y análisis de datos.</p>
+<p><strong>Verificación de valores nulo en el Dataset:</strong>
+Se confirmó la ausencia de valores nulos en el conjunto de datos. Este paso asegura que no será necesario realizar procedimientos adicionales para tratar con datos incompletos, manteniendo la integridad y maximizando el uso de todos los datos disponibles.</p>
+<p><strong>Conversión y Extracción de Tiempo:</strong>
+La columna de hora se transformó a un formato de tiempo reconocible por Pandas, lo que permite manipulaciones temporales más complejas y precisas. Además, se extrajo la hora del día en una nueva columna para facilitar análisis que requieren una resolución temporal como el diurno, crucial para estudios sobre patrones de viento y generación de energía.</p>
+</section>
+<section id="summary">
+<h4><strong>Summary:</strong><a class="headerlink" href="#summary" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>HORA</th>
+      <th>DIRECCION_VIENTO</th>
+      <th>VELOCIDAD_VIENTO</th>
+      <th>UMIDAD_REL_MAX</th>
+      <th>UMIDAD_REL_MIN</th>
+      <th>TEMP_MAX_ANT</th>
+      <th>TEMP_MIN_ANT</th>
+      <th>UMIDADE_REL_AR</th>
+      <th>PRESION_ATMOSFERICA</th>
+      <th>PRECIPITACION_TOTAL</th>
+      <th>RAJADA_MAXIMA</th>
+      <th>PRESION_ATMOSFERICA_MAX_ANT</th>
+      <th>PRESION_ATMOSFERICA_MIN_ANT</th>
+      <th>HORA_del_dia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2024-04-14 12:00:00</td>
+      <td>0.809017</td>
+      <td>1.8</td>
+      <td>69.0</td>
+      <td>60.0</td>
+      <td>22.6</td>
+      <td>20.7</td>
+      <td>61.0</td>
+      <td>888.2</td>
+      <td>0.0</td>
+      <td>3.8</td>
+      <td>888.2</td>
+      <td>887.7</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2024-04-14 13:00:00</td>
+      <td>0.965926</td>
+      <td>2.7</td>
+      <td>62.0</td>
+      <td>55.0</td>
+      <td>24.2</td>
+      <td>22.5</td>
+      <td>55.0</td>
+      <td>888.4</td>
+      <td>0.0</td>
+      <td>4.7</td>
+      <td>888.4</td>
+      <td>888.2</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2024-04-14 14:00:00</td>
+      <td>0.891007</td>
+      <td>2.0</td>
+      <td>56.0</td>
+      <td>50.0</td>
+      <td>25.5</td>
+      <td>24.3</td>
+      <td>51.0</td>
+      <td>888.1</td>
+      <td>0.0</td>
+      <td>4.9</td>
+      <td>888.4</td>
+      <td>888.1</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024-04-14 15:00:00</td>
+      <td>0.848048</td>
+      <td>2.5</td>
+      <td>52.0</td>
+      <td>44.0</td>
+      <td>27.4</td>
+      <td>25.0</td>
+      <td>44.0</td>
+      <td>887.4</td>
+      <td>0.0</td>
+      <td>5.8</td>
+      <td>888.1</td>
+      <td>887.4</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2024-04-14 16:00:00</td>
+      <td>0.224951</td>
+      <td>2.4</td>
+      <td>50.0</td>
+      <td>43.0</td>
+      <td>27.1</td>
+      <td>25.5</td>
+      <td>46.0</td>
+      <td>886.5</td>
+      <td>0.0</td>
+      <td>5.8</td>
+      <td>887.4</td>
+      <td>886.5</td>
+      <td>16</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>HORA</th>
+      <th>DIRECCION_VIENTO</th>
+      <th>VELOCIDAD_VIENTO</th>
+      <th>UMIDAD_REL_MAX</th>
+      <th>UMIDAD_REL_MIN</th>
+      <th>TEMP_MAX_ANT</th>
+      <th>TEMP_MIN_ANT</th>
+      <th>UMIDADE_REL_AR</th>
+      <th>PRESION_ATMOSFERICA</th>
+      <th>PRECIPITACION_TOTAL</th>
+      <th>RAJADA_MAXIMA</th>
+      <th>PRESION_ATMOSFERICA_MAX_ANT</th>
+      <th>PRESION_ATMOSFERICA_MIN_ANT</th>
+      <th>HORA_del_dia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>87693</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+      <td>87693.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>2024-04-14 11:30:23.174027520</td>
+      <td>0.405810</td>
+      <td>2.466192</td>
+      <td>69.058465</td>
+      <td>63.176194</td>
+      <td>21.921264</td>
+      <td>20.684570</td>
+      <td>66.146682</td>
+      <td>887.251925</td>
+      <td>0.160907</td>
+      <td>5.161076</td>
+      <td>887.580724</td>
+      <td>886.891093</td>
+      <td>11.506437</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>2024-04-14 00:00:00</td>
+      <td>-1.000000</td>
+      <td>0.000000</td>
+      <td>12.000000</td>
+      <td>10.000000</td>
+      <td>9.200000</td>
+      <td>8.400000</td>
+      <td>10.000000</td>
+      <td>863.400000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>865.300000</td>
+      <td>862.800000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>2024-04-14 05:00:00</td>
+      <td>-0.156434</td>
+      <td>1.500000</td>
+      <td>54.000000</td>
+      <td>48.000000</td>
+      <td>19.200000</td>
+      <td>18.400000</td>
+      <td>51.000000</td>
+      <td>885.300000</td>
+      <td>0.000000</td>
+      <td>3.400000</td>
+      <td>885.600000</td>
+      <td>885.000000</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>2024-04-14 12:00:00</td>
+      <td>0.788011</td>
+      <td>2.400000</td>
+      <td>72.000000</td>
+      <td>64.000000</td>
+      <td>21.400000</td>
+      <td>20.200000</td>
+      <td>68.000000</td>
+      <td>887.200000</td>
+      <td>0.000000</td>
+      <td>5.000000</td>
+      <td>887.500000</td>
+      <td>886.900000</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2024-04-14 18:00:00</td>
+      <td>0.970296</td>
+      <td>3.400000</td>
+      <td>87.000000</td>
+      <td>80.000000</td>
+      <td>24.700000</td>
+      <td>23.100000</td>
+      <td>84.000000</td>
+      <td>889.100000</td>
+      <td>0.000000</td>
+      <td>6.800000</td>
+      <td>889.300000</td>
+      <td>888.800000</td>
+      <td>18.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2024-04-14 23:00:00</td>
+      <td>1.000000</td>
+      <td>10.000000</td>
+      <td>100.000000</td>
+      <td>98.000000</td>
+      <td>35.300000</td>
+      <td>34.400000</td>
+      <td>99.000000</td>
+      <td>1023.500000</td>
+      <td>70.800000</td>
+      <td>24.300000</td>
+      <td>913.100000</td>
+      <td>910.900000</td>
+      <td>23.000000</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>NaN</td>
+      <td>0.686247</td>
+      <td>1.313968</td>
+      <td>19.640222</td>
+      <td>20.166336</td>
+      <td>3.721386</td>
+      <td>3.513744</td>
+      <td>19.992327</td>
+      <td>4.012404</td>
+      <td>1.307515</td>
+      <td>2.311157</td>
+      <td>3.646750</td>
+      <td>3.564539</td>
+      <td>6.932300</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Cantidad de Datos:</strong></p>
+<p>Se analizaron un total de <strong>87,693</strong> observaciones para cada una de las variables, asegurando una muestra robusta para los análisis estadísticos y la modelación.
+Variables Analizadas:</p>
+<ul class="simple">
+<li><p><strong>Hora del Día (HORA_del_dia):</strong> Las mediciones cubren todas las horas del día desde la medianoche hasta las 11 PM, lo que permite estudios detallados sobre variaciones diurnas.</p></li>
+<li><p><strong>Dirección del Viento (DIRECCION_VIENTO):</strong> Los valores varían desde -1 hasta 1, sugiriendo una normalización previa de estos datos. La media cercana a 0.406 indica una tendencia general en la dirección del viento.</p></li>
+<li><p><strong>Velocidad del Viento (VELOCIDAD_VIENTO):</strong> Oscila entre 0 y 10 m/s con una media de 2.47 m/s, lo cual es crucial para estimaciones de energía eólica.</p></li>
+<li><p><strong>Humedad Relativa (UMIDAD_REL_MAX, UMIDAD_REL_MIN, UMIDADE_REL_AR):</strong> Con máximos y mínimos de 100% y 10% respectivamente, estas variables muestran un amplio rango que es vital para comprender la variabilidad climática.</p></li>
+<li><p><strong>Temperatura (TEMP_MAX_ANT, TEMP_MIN_ANT):</strong> Se registran temperaturas que varían significativamente durante el día, de vital importancia para modelar la conducta atmosférica.</p></li>
+<li><p><strong>Presión Atmosférica (PRESION_ATMOSFERICA, PRESION_ATMOSFERICA_MAX_ANT, PRESION_ATMOSFERICA_MIN_ANT):</strong> La presión atmosférica también presenta variaciones, un factor esencial en muchos modelos meteorológicos.</p></li>
+<li><p><strong>Precipitación Total (PRECIPITACION_TOTAL):</strong> Varía entre 0 y 70.8 mm, indicando eventos de precipitación significativos que pueden impactar la velocidad del viento y la generación de energía.</p></li>
+</ul>
+<p><strong>Dispersión y Tendencia Central:</strong></p>
+<ul class="simple">
+<li><p>Los valores de desviación estándar para cada variable indican la variabilidad existente en los datos, esencial para la detección de patrones y anomalías.</p></li>
+<li><p>Las medias y medianas de cada variable proporcionan un centro de gravedad de los datos, ayudando a entender las condiciones promedio.</p></li>
+</ul>
+</section>
+</section>
+<section id="visualizacion">
+<h3><strong>Visualizacion:</strong><a class="headerlink" href="#visualizacion" title="Link to this heading">#</a></h3>
+<section id="histograma">
+<h4><strong>Histograma:</strong><a class="headerlink" href="#histograma" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a39faa1cd8bfb9d434755b0047805e9ede04ac1d17d0c87983d6d6d902586637.png" src="_images/a39faa1cd8bfb9d434755b0047805e9ede04ac1d17d0c87983d6d6d902586637.png" />
+</div>
+</div>
+<p><strong>Hora y Hora_del_día:</strong> Muestran una distribución uniforme a lo largo del día, indicando que las mediciones se tomaron de forma equitativa en cada hora.</p>
+<p><strong>Dirección del Viento:</strong> Presenta una distribución bimodal, con picos alrededor de -1 y 1, lo que sugiere que el viento tiende a soplar en dos direcciones predominantes.</p>
+<p><strong>Velocidad del Viento:</strong> La distribución es aproximadamente normal con un sesgo ligero hacia velocidades menores, lo cual es típico en datos de viento.</p>
+<p><strong>Humedad Relativa (Max, Min y del Aire):</strong> Muestran distribuciones sesgadas hacia los valores más altos, lo que podría indicar condiciones de humedad prevalentes en la región de estudio.</p>
+<p><strong>Temperatura (Max Anterior, Min Anterior):</strong> Ambas presentan distribuciones que sugieren variaciones diarias normales, con temperaturas máximas más altas como se esperaría.</p>
+<p><strong>Precipitación Total:</strong> Muestra una gran cantidad de días con precipitación nula o baja y algunos eventos de precipitaciones intensas.</p>
+<p><strong>Rajada Máxima:</strong> La distribución de las ráfagas máximas del viento también tiende a ser normal con un sesgo hacia las velocidades más bajas.</p>
+<p><strong>Presión Atmosférica (Actual, Max Ant, Min Ant):</strong> Las presiones atmosféricas muestran distribuciones normales, indicativas de estabilidad en las condiciones de presión a lo largo del tiempo.</p>
+</section>
+<section id="boxplot">
+<h4><strong>Boxplot:</strong><a class="headerlink" href="#boxplot" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/09d44c46b96258acad208e4c9952a28b67724e3f43b052053448c6e3e16d7157.png" src="_images/09d44c46b96258acad208e4c9952a28b67724e3f43b052053448c6e3e16d7157.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p><strong>Hora:</strong> Refleja una distribución uniforme sin valores atípicos, consistente con una cobertura temporal equitativa.</p></li>
+<li><p><strong>Dirección del Viento:</strong> La mayoría de los datos se concentran cerca de los extremos, con pocos valores atípicos, reiterando la presencia de direcciones de viento predominantes.</p></li>
+<li><p><strong>Velocidad del Viento:</strong> Presenta algunos valores atípicos altos, sugiriendo días con vientos excepcionalmente fuertes.</p></li>
+<li><p><strong>Humedad Relativa y Temperatura:</strong> Poseen varios valores atípicos que podrían corresponder a condiciones climáticas anormales o errores de medición.</p></li>
+<li><p><strong>Precipitación Total:</strong> Se identifican valores atípicos extremos, probablemente correspondientes a eventos de lluvia intensa.</p></li>
+<li><p><strong>Presión Atmosférica:</strong> Exhibe pocos valores atípicos, lo que podría ser indicativo de variaciones climáticas o errores en la medición.</p></li>
+</ul>
+</section>
+<section id="scatterplot">
+<h4><strong>ScatterPlot:</strong><a class="headerlink" href="#scatterplot" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;DIRECCION_VIENTO&quot;</span><span class="p">,</span> <span class="s2">&quot;VELOCIDAD_VIENTO&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;UMIDAD_REL_MAX&quot;</span><span class="p">,</span> <span class="s2">&quot;VELOCIDAD_VIENTO&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;TEMP_MAX_ANT&quot;</span><span class="p">,</span> <span class="s2">&quot;VELOCIDAD_VIENTO&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;UMIDADE_REL_AR&quot;</span><span class="p">,</span> <span class="s2">&quot;VELOCIDAD_VIENTO&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">var1</span><span class="p">,</span> <span class="n">var2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">var1</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">var2</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scatterplot: </span><span class="si">{</span><span class="n">var1</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">var2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/e166e15ee8d64738756ea05379f99eb12ce38caade0315eb60e55c0b64ff0d34.png" src="_images/e166e15ee8d64738756ea05379f99eb12ce38caade0315eb60e55c0b64ff0d34.png" />
+</div>
+</div>
+<p><strong>Dirección del Viento vs. Velocidad del Viento:</strong> No se observa una correlación clara, lo que sugiere que la dirección del viento no determina su velocidad.</p>
+<p><strong>Temperatura Máxima Anterior vs. Velocidad del Viento:</strong> La dispersión no muestra una relación definida, lo que indica que la temperatura no tiene un impacto directo en la velocidad del viento.</p>
+<p><strong>Humedad Relativa (Max y del Aire) vs. Velocidad del Viento:</strong> Ambas graficas no muestran una correlación aparente, sugiriendo que la humedad relativa no influye significativamente en la velocidad del viento.</p>
+</section>
+<section id="regplot">
+<h4><strong>RegPlot:</strong><a class="headerlink" href="#regplot" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">var1</span><span class="p">,</span> <span class="n">var2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">var1</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">var2</span><span class="p">],</span> <span class="n">scatter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Regplot: </span><span class="si">{</span><span class="n">var1</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">var2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b96fca447a946b0b02ba952527334b08c86dd295451999eda88e29eff9b3c3c9.png" src="_images/b96fca447a946b0b02ba952527334b08c86dd295451999eda88e29eff9b3c3c9.png" />
+</div>
+</div>
+<p><strong>Dirección del Viento vs. Velocidad del Viento:</strong> La concentración de puntos a lo largo de la parte inferior sugiere que la velocidad del viento tiende a ser baja independientemente de la dirección del viento.</p>
+<p><strong>Temperatura Máxima Anterior vs. Velocidad del Viento:</strong> Similar al scatterplot, no hay una tendencia clara, lo que implica una independencia entre estas dos variables.</p>
+<p><strong>Humedad Relativa (Max y del Aire) vs. Velocidad del Viento:</strong> A pesar de la falta de una relación lineal, hay una concentración de valores en los rangos de humedad más bajos, lo que podría ser de interés para un análisis más profundo.</p>
+</section>
+</section>
+<section id="correlacion-entre-variables">
+<h3><strong>Correlacion entre variables:</strong><a class="headerlink" href="#correlacion-entre-variables" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Mapa de Calor de Correlaciones&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d8b21684b481142ae814b1c1561bf8321f8e3903299f24c55c7c81531be6ee30.png" src="_images/d8b21684b481142ae814b1c1561bf8321f8e3903299f24c55c7c81531be6ee30.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                 HORA  DIRECCION_VIENTO  VELOCIDAD_VIENTO  \
+HORA                         1.000000          0.005874          0.258108   
+DIRECCION_VIENTO             0.005874          1.000000          0.256588   
+VELOCIDAD_VIENTO             0.258108          0.256588          1.000000   
+UMIDAD_REL_MAX              -0.352719         -0.325512         -0.282787   
+UMIDAD_REL_MIN              -0.402061         -0.301443         -0.291752   
+TEMP_MAX_ANT                 0.551250         -0.003071          0.247706   
+TEMP_MIN_ANT                 0.512878         -0.003228          0.231472   
+UMIDADE_REL_AR              -0.374856         -0.325574         -0.301358   
+PRESION_ATMOSFERICA         -0.033710          0.311515          0.204031   
+PRECIPITACION_TOTAL          0.030936         -0.077363          0.009466   
+RAJADA_MAXIMA                0.364312          0.158429          0.868279   
+PRESION_ATMOSFERICA_MAX_ANT  0.008508          0.336029          0.242446   
+PRESION_ATMOSFERICA_MIN_ANT -0.030738          0.347117          0.231584   
+HORA_del_dia                 1.000000          0.005874          0.258108   
+
+                             UMIDAD_REL_MAX  UMIDAD_REL_MIN  TEMP_MAX_ANT  \
+HORA                              -0.352719       -0.402061      0.551250   
+DIRECCION_VIENTO                  -0.325512       -0.301443     -0.003071   
+VELOCIDAD_VIENTO                  -0.282787       -0.291752      0.247706   
+UMIDAD_REL_MAX                     1.000000        0.976847     -0.632577   
+UMIDAD_REL_MIN                     0.976847        1.000000     -0.682133   
+TEMP_MAX_ANT                      -0.632577       -0.682133      1.000000   
+TEMP_MIN_ANT                      -0.619944       -0.632224      0.974177   
+UMIDADE_REL_AR                     0.984191        0.983224     -0.657367   
+PRESION_ATMOSFERICA               -0.201118       -0.197731     -0.057290   
+PRECIPITACION_TOTAL                0.150524        0.119286     -0.038419   
+RAJADA_MAXIMA                     -0.308853       -0.336653      0.375482   
+PRESION_ATMOSFERICA_MAX_ANT       -0.258132       -0.259433     -0.004993   
+PRESION_ATMOSFERICA_MIN_ANT       -0.249057       -0.242388     -0.040266   
+HORA_del_dia                      -0.352719       -0.402061      0.551250   
+
+                             TEMP_MIN_ANT  UMIDADE_REL_AR  \
+HORA                             0.512878       -0.374856   
+DIRECCION_VIENTO                -0.003228       -0.325574   
+VELOCIDAD_VIENTO                 0.231472       -0.301358   
+UMIDAD_REL_MAX                  -0.619944        0.984191   
+UMIDAD_REL_MIN                  -0.632224        0.983224   
+TEMP_MAX_ANT                     0.974177       -0.657367   
+TEMP_MIN_ANT                     1.000000       -0.626388   
+UMIDADE_REL_AR                  -0.626388        1.000000   
+PRESION_ATMOSFERICA             -0.083511       -0.224574   
+PRECIPITACION_TOTAL             -0.077409        0.155324   
+RAJADA_MAXIMA                    0.343417       -0.324859   
+PRESION_ATMOSFERICA_MAX_ANT     -0.038495       -0.287034   
+PRESION_ATMOSFERICA_MIN_ANT     -0.064440       -0.273784   
+HORA_del_dia                     0.512878       -0.374856   
+
+                             PRESION_ATMOSFERICA  PRECIPITACION_TOTAL  \
+HORA                                   -0.033710             0.030936   
+DIRECCION_VIENTO                        0.311515            -0.077363   
+VELOCIDAD_VIENTO                        0.204031             0.009466   
+UMIDAD_REL_MAX                         -0.201118             0.150524   
+UMIDAD_REL_MIN                         -0.197731             0.119286   
+TEMP_MAX_ANT                           -0.057290            -0.038419   
+TEMP_MIN_ANT                           -0.083511            -0.077409   
+UMIDADE_REL_AR                         -0.224574             0.155324   
+PRESION_ATMOSFERICA                     1.000000            -0.073342   
+PRECIPITACION_TOTAL                    -0.073342             1.000000   
+RAJADA_MAXIMA                           0.143939             0.123732   
+PRESION_ATMOSFERICA_MAX_ANT             0.881448            -0.065442   
+PRESION_ATMOSFERICA_MIN_ANT             0.885210            -0.084140   
+HORA_del_dia                           -0.033710             0.030936   
+
+                             RAJADA_MAXIMA  PRESION_ATMOSFERICA_MAX_ANT  \
+HORA                              0.364312                     0.008508   
+DIRECCION_VIENTO                  0.158429                     0.336029   
+VELOCIDAD_VIENTO                  0.868279                     0.242446   
+UMIDAD_REL_MAX                   -0.308853                    -0.258132   
+UMIDAD_REL_MIN                   -0.336653                    -0.259433   
+TEMP_MAX_ANT                      0.375482                    -0.004993   
+TEMP_MIN_ANT                      0.343417                    -0.038495   
+UMIDADE_REL_AR                   -0.324859                    -0.287034   
+PRESION_ATMOSFERICA               0.143939                     0.881448   
+PRECIPITACION_TOTAL               0.123732                    -0.065442   
+RAJADA_MAXIMA                     1.000000                     0.192084   
+PRESION_ATMOSFERICA_MAX_ANT       0.192084                     1.000000   
+PRESION_ATMOSFERICA_MIN_ANT       0.170240                     0.964819   
+HORA_del_dia                      0.364312                     0.008508   
+
+                             PRESION_ATMOSFERICA_MIN_ANT  HORA_del_dia  
+HORA                                           -0.030738      1.000000  
+DIRECCION_VIENTO                                0.347117      0.005874  
+VELOCIDAD_VIENTO                                0.231584      0.258108  
+UMIDAD_REL_MAX                                 -0.249057     -0.352719  
+UMIDAD_REL_MIN                                 -0.242388     -0.402061  
+TEMP_MAX_ANT                                   -0.040266      0.551250  
+TEMP_MIN_ANT                                   -0.064440      0.512878  
+UMIDADE_REL_AR                                 -0.273784     -0.374856  
+PRESION_ATMOSFERICA                             0.885210     -0.033710  
+PRECIPITACION_TOTAL                            -0.084140      0.030936  
+RAJADA_MAXIMA                                   0.170240      0.364312  
+PRESION_ATMOSFERICA_MAX_ANT                     0.964819      0.008508  
+PRESION_ATMOSFERICA_MIN_ANT                     1.000000     -0.030738  
+HORA_del_dia                                   -0.030738      1.000000  
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>La hora del día</strong> tiene una correlación positiva moderada con <strong>la temperatura máxima anterior</strong> (0.551250) y <strong>la máxima ráfaga de viento</strong> (0.364312), lo que sugiere que tanto las temperaturas más altas como las ráfagas de viento más fuertes tienden a ocurrir en horas específicas del día.</p>
+<p><strong>La dirección del viento</strong> muestra una correlación positiva moderada con la presión atmosférica y sus valores máximos y mínimos anteriores (alrededor de 0.31-0.35), indicando que ciertas direcciones del viento podrían estar asociadas con valores específicos de presión atmosférica.</p>
+<p><strong>La velocidad del viento</strong> tiene una correlación muy fuerte con <strong>la ráfaga máxima</strong> (0.868279), lo que es esperado, ya que las ráfagas son picos en la velocidad del viento.</p>
+<p><strong>La humedad relativa máxima y mínima</strong> presentan una correlación muy alta entre sí (0.976847), lo que implica que los valores de humedad relativa tienden a cambiar juntos durante el mismo período. Estas también tienen correlaciones negativas fuertes con <strong>la temperatura máxima anterior</strong> (aproximadamente -0.63), lo que podría sugerir que cuando la temperatura alcanza su punto más alto, la humedad relativa tiende a ser más baja.</p>
+<p><strong>La temperatura máxima anterior</strong> y l<strong>a temperatura mínima anterior</strong> también están muy correlacionadas (0.974177), lo que indica que las temperaturas máximas y mínimas del día previo están muy relacionadas, probablemente reflejando la variación diurna normal de temperatura.</p>
+<p><strong>La presión atmosférica</strong> está correlacionada con sus propios valores máximos y mínimos anteriores (alrededor de 0.96), sugiriendo que los cambios en la presión atmosférica son relativamente estables y graduales en este conjunto de datos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_numeric</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">)</span>
+<span class="n">df_numeric_</span> <span class="o">=</span> <span class="n">df_numeric</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;HORA_del_dia&#39;</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">calculate_vif</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">vif_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;Feature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;VIF_Value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">variance_inflation_factor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+    <span class="k">return</span> <span class="n">vif_data</span>
+
+<span class="k">def</span> <span class="nf">drop_multicollinearity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">vif_df</span> <span class="o">=</span> <span class="n">calculate_vif</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">vif_df</span><span class="p">[</span><span class="s1">&#39;VIF_Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+        <span class="n">max_vif_index</span> <span class="o">=</span> <span class="n">vif_df</span><span class="p">[</span><span class="s1">&#39;VIF_Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">vif_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">max_vif_index</span><span class="p">,</span> <span class="s1">&#39;Feature&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">vif_df</span> <span class="o">=</span> <span class="n">calculate_vif</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">vif_df</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">target</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X</span>
+
+<span class="n">wind</span> <span class="o">=</span> <span class="n">drop_multicollinearity</span><span class="p">(</span><span class="n">df_numeric_</span><span class="p">,</span> <span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">wind_</span> <span class="o">=</span> <span class="n">wind</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        Feature  VIF_Value
+0    DIR_VIENTO   1.389529
+1  UMID_REL_MIN   3.184922
+2  PRECIP_TOTAL   1.039001
+3    RAJADA_MAX   3.678934
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">wind_</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Matriz de correlación&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/9d0fb42c478731b0fe76418401037d01ad8fc331521dee00b6ca0141b4c92bfc.png" src="_images/9d0fb42c478731b0fe76418401037d01ad8fc331521dee00b6ca0141b4c92bfc.png" />
+</div>
+</div>
+<p>Hemos observado que los coeficientes de correlación entre las variables explicativas son bajos en comparación con el umbral de 0.5, lo que sugiere que las variables no muestran una fuerte correlación entre sí. Esto indica que las variables explicativas proporcionan información única y no redundante entre sí</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">wind</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">wind</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">wind</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Diagrama de violín para la variable </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5b7cb68699e9951dadfb6ae886941a082f6321daabd4ab80d52f023ff6275583.png" src="_images/5b7cb68699e9951dadfb6ae886941a082f6321daabd4ab80d52f023ff6275583.png" />
+<img alt="_images/5e39470f0ef3892fde062c49a748fb5fcfdc5a51360b5b1e6fce5b7612fb3b13.png" src="_images/5e39470f0ef3892fde062c49a748fb5fcfdc5a51360b5b1e6fce5b7612fb3b13.png" />
+<img alt="_images/d5d58973bff06af15e25db911f3a362978a3b51404919b7186c63e354eeeb688.png" src="_images/d5d58973bff06af15e25db911f3a362978a3b51404919b7186c63e354eeeb688.png" />
+<img alt="_images/bf4e2b0361e274eb47d7599664c11e67f4f7e6d59395f860b20fe72f4198c204.png" src="_images/bf4e2b0361e274eb47d7599664c11e67f4f7e6d59395f860b20fe72f4198c204.png" />
+<img alt="_images/5713794658540a08f35acaa0c3f4295c3937ea9014147b87caa6e20bed6dc408.png" src="_images/5713794658540a08f35acaa0c3f4295c3937ea9014147b87caa6e20bed6dc408.png" />
+<img alt="_images/333a21bf93da6f0f7c84c23d650790e0b1044aa8324a56c872abbb5511a3ff37.png" src="_images/333a21bf93da6f0f7c84c23d650790e0b1044aa8324a56c872abbb5511a3ff37.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>(DIR_VIENTO): Este diagrama tiene una forma simétrica y alargada horizontalmente, lo que sugiere que la variable DIR_VIENTO tiene una distribución aproximadamente normal o gaussiana.</p></li>
+<li><p>(UMID_REL_MIN): Aquí la distribución es asimétrica y sesgada hacia la derecha, indicando que la mayoría de los valores de UMID_REL_MIN están concentrados en el extremo inferior del rango.</p></li>
+<li><p>(RAJADA_MAX): Esta distribución es altamente asimétrica y presenta un pico agudo, lo que significa que la mayoría de los valores de RAJADA_MAX se agrupan cerca de un valor central específico.</p></li>
+<li><p>(HORA_del_dia): La forma de este diagrama es bastante simétrica y acampanada, similar a una distribución normal, lo que sugiere que los valores de HORA_del_dia están distribuidos de manera más uniforme.</p></li>
+<li><p>(VEL_VIENTO): Aquí observamos una distribución sesgada hacia la derecha, con un pico agudo y una cola larga hacia valores más altos, lo que indica que la mayoría de los valores de VEL_VIENTO son relativamente bajos, pero hay algunos valores atípicos más altos.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;HORA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;HORA&#39;</span><span class="p">])</span>
+
+<span class="c1"># Establecer la columna HORA como el índice del DataFrame</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;HORA&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File c:\Users\pc\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\indexes\base.py:3790,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3789</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3790</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3791</span> <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+
+<span class="nn">File index.pyx:152,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File index.pyx:181,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File pandas\_libs\hashtable_class_helper.pxi:7080,</span> in <span class="ni">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="nt">()</span>
+
+<span class="nn">File pandas\_libs\hashtable_class_helper.pxi:7088,</span> in <span class="ni">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="nt">()</span>
+
+<span class="ne">KeyError</span>: &#39;HORA&#39;
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;HORA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;HORA&#39;</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Establecer la columna HORA como el índice del DataFrame</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;HORA&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File c:\Users\pc\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\frame.py:3893,</span> in <span class="ni">DataFrame.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3891</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">nlevels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3892</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_multilevel</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">3893</span> <span class="n">indexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3894</span> <span class="k">if</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">indexer</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">3895</span>     <span class="n">indexer</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexer</span><span class="p">]</span>
+
+<span class="nn">File c:\Users\pc\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\indexes\base.py:3797,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3792</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">casted_key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">3793</span>         <span class="nb">isinstance</span><span class="p">(</span><span class="n">casted_key</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3794</span>         <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3795</span>     <span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">3796</span>         <span class="k">raise</span> <span class="n">InvalidIndexError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">3797</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="g g-Whitespace">   </span><span class="mi">3798</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3799</span>     <span class="c1"># If we have a listlike key, _check_indexing_error will raise</span>
+<span class="g g-Whitespace">   </span><span class="mi">3800</span>     <span class="c1">#  InvalidIndexError. Otherwise we fall through and re-raise</span>
+<span class="g g-Whitespace">   </span><span class="mi">3801</span>     <span class="c1">#  the TypeError.</span>
+<span class="g g-Whitespace">   </span><span class="mi">3802</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_indexing_error</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="ne">KeyError</span>: &#39;HORA&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="c1"># plt.figure(figsize=(12, 6))</span>
+<span class="c1"># plt.plot(df.index, df[&#39;VEL_VIENTO&#39;], label=&#39;Velocidad del Viento&#39;)</span>
+<span class="c1"># plt.title(&#39;Serie Temporal de Velocidad del Viento&#39;)</span>
+<span class="c1"># plt.xlabel(&#39;Fecha y Hora&#39;)</span>
+<span class="c1"># plt.ylabel(&#39;Velocidad del Viento (m/s)&#39;)</span>
+<span class="c1"># plt.legend()</span>
+<span class="c1"># plt.grid(True)</span>
+<span class="c1"># plt.show()</span>
+
+<span class="c1"># Descomposición de la serie temporal</span>
+<span class="n">decomposition</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">seasonal_decompose</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;additive&#39;</span><span class="p">,</span> <span class="n">period</span> <span class="o">=</span> <span class="mi">24</span><span class="p">)</span>
+<span class="n">decomposition</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Análisis de autocorrelación</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">plot_acf</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;VEL_VIENTO&#39;</span><span class="p">],</span> <span class="n">lags</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Función de Autocorrelación (ACF)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lags&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Autocorrelación&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/07b6e2ec16177e8f7db918aea90df7513faad097a597e575fed720df2f05a590.png" src="_images/07b6e2ec16177e8f7db918aea90df7513faad097a597e575fed720df2f05a590.png" />
+<img alt="_images/8964fe5d5db0a1a3e39456277fc7709d3bf02a78a3853dc896fc322e372f06c4.png" src="_images/8964fe5d5db0a1a3e39456277fc7709d3bf02a78a3853dc896fc322e372f06c4.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="boston_housing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Boston Housing Model</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windspeed"><strong>WindSpeed:</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#liberias"><strong>Liberias:</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importacion-de-datos"><strong>Importacion de datos:</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio"><strong>Analisis Exploratorio:</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estrutura-de-los-datos"><strong>Estrutura de los datos:</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tamano"><strong>Tamaño:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#conteo-de-nulos"><strong>Conteo de nulos:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variables"><strong>Variables:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#renombre-de-las-columndas-del-dataframe"><strong>Renombre de las Columndas del Dataframe:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-en-el-formato"><strong>Cambio en el formato:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summary"><strong>Summary:</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion"><strong>Visualizacion:</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#histograma"><strong>Histograma:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot"><strong>Boxplot:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot"><strong>ScatterPlot:</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regplot"><strong>RegPlot:</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-variables"><strong>Correlacion entre variables:</strong></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Juan Esteban Albis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
