@@ -16,15 +16,22 @@ Traceback (most recent call last):
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np 
 from statsmodels.stats.outliers_influence import variance_inflation_factor
-from sklearn.impute import SimpleImputer
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.linear_model import LinearRegression, Lasso, Ridge, BayesianRidge
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.metrics import mean_absolute_percentage_error, mean_squared_error, r2_score
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.svm import SVR
+from skopt.space import Real, Categorical, Integer
+from skopt import BayesSearchCV
+from sklearn.pipeline import Pipeline
+from copy import deepcopy
+from time import time
+import os
+import pickle
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -33,11 +40,12 @@ warnings.filterwarnings('ignore')
 
 [1;31m---------------------------------------------------------------------------[0m
 [1;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Cell [1;32mIn[1], line 2[0m
+Cell [1;32mIn[1], line 3[0m
 [0;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
-[1;32m----> 2[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
-[0;32m      3[0m [38;5;28;01mimport[39;00m [38;5;21;01mseaborn[39;00m [38;5;28;01mas[39;00m [38;5;21;01msns[39;00m
-[0;32m      4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mstatsmodels[39;00m[38;5;21;01m.[39;00m[38;5;21;01mstats[39;00m[38;5;21;01m.[39;00m[38;5;21;01moutliers_influence[39;00m [38;5;28;01mimport[39;00m variance_inflation_factor
+[0;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m 
+[1;32m----> 3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mstatsmodels[39;00m[38;5;21;01m.[39;00m[38;5;21;01mstats[39;00m[38;5;21;01m.[39;00m[38;5;21;01moutliers_influence[39;00m [38;5;28;01mimport[39;00m variance_inflation_factor
+[0;32m      4[0m [38;5;28;01mfrom[39;00m [38;5;21;01msklearn[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlinear_model[39;00m [38;5;28;01mimport[39;00m LinearRegression, Lasso, Ridge, BayesianRidge
+[0;32m      5[0m [38;5;28;01mfrom[39;00m [38;5;21;01msklearn[39;00m[38;5;21;01m.[39;00m[38;5;21;01mtree[39;00m [38;5;28;01mimport[39;00m DecisionTreeRegressor
 
-[1;31mModuleNotFoundError[0m: No module named 'matplotlib'
+[1;31mModuleNotFoundError[0m: No module named 'statsmodels'
 
