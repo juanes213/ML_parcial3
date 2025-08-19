@@ -1,0 +1,54 @@
+REPORTE - PARCIAL 3 MACHINE LEARNING
+==================================================
+Fecha: 2025-08-19 19:54:24
+
+1. RESUMEN DE DATOS
+--------------------
+Shape del dataset: (1000, 4)
+Variable objetivo: purchase
+Tipo de problema: classification
+
+2. PREPROCESAMIENTO
+--------------------
+✓ Missing values handled: num=mean, cat=most_frequent
+✓ Outliers removed: iqr, threshold=2.0, removed=40
+✓ Categorical encoding: onehot, max_categories=10
+✓ Feature interactions created: 5
+✓ Feature scaling: standard
+✓ Data split: test=0.2, val=0.1
+
+3. MODELOS ENTRENADOS
+--------------------
+• Logistic Regression
+• Random Forest
+• Gradient Boosting
+• SVM
+• K-Nearest Neighbors
+• Naive Bayes
+• Decision Tree
+
+4. RESULTADOS DE EVALUACIÓN
+--------------------
+              Model  Accuracy  Precision  Recall  F1-Score  AUC-ROC  Log-Loss
+Logistic Regression    0.7917     0.7358  0.7917    0.7175   0.6454    0.4884
+        Naive Bayes    0.7917     0.7671  0.7917    0.7742   0.6446    0.8813
+  Gradient Boosting    0.7865     0.7141  0.7865    0.7144   0.6030    0.5334
+                SVM    0.7865     0.6259  0.7865    0.6970   0.5503    0.5109
+      Random Forest    0.7812     0.7344  0.7812    0.7424   0.6088    1.2675
+K-Nearest Neighbors    0.7708     0.7028  0.7708    0.7188   0.6123    2.2335
+      Decision Tree    0.7448     0.7066  0.7448    0.7213   0.5552    9.0181
+
+5. MEJOR MODELO: Logistic Regression
+--------------------
+Accuracy: 0.7917
+Precision: 0.7358
+Recall: 0.7917
+F1-Score: 0.7175
+
+6. CONCLUSIONES
+--------------------
+• El mejor modelo es Logistic Regression
+• Se aplicó preprocesamiento completo de datos
+• Se evaluaron múltiples algoritmos de ML
+• Se generaron visualizaciones comprehensivas
+• Los resultados demuestran competencia en ML
